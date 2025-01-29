@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Forum
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+    <div class="tab active-tab" id="review">
+        <div class="reviews-box">
+            <div class="row">
+
+
+
+
+                <div class="col-xl-12 col-md-12">
+                    <div class="product_reviews_box">
+                        <h2 class="product_reviews_title text-danger text-bold"> একে অপরের জন্য</h2>
+
+                        {% for post in posts %}
+                        <div class="product_reviews_single">
+                            <div class="product_reviews_image">
+                                <img src="{{post.author.profile_picture.url}}" alt="" style="width: 80px; height: 80px;">
+                            </div>
+                            <div class="product_reviews_content">
+                                <h3>{{ post.title }} <span>{{ post.created_at|timesince }} ago</span></h3>
+                                <p>{{ post.content }}</p>
+                                <!-- Trigger for Modal -->
+                                <a href="#" class="reply-btn" data-bs-toggle="modal" data-bs-target="#replyModal-{{ post.id }}">Reply</a>
+                            <!-- Button trigger modal -->
+
+
+                            <div class="row">
+<div class="col-2"></div>
+                            <div class="col-10">
+                                <h3>Replies:</h3>
+        {% if post.replies.all %}
+            <ul>
+                {% for reply in post.replies.all %}
+                    <li>
+                        <p><b>{{ reply.author.username }}:</b> {{ reply.content }} ({{ reply.created_at }})</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No replies yet.</p>
+        {% endif %}
+                            </div>
+
+                            </div>
+                            
+
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="modal fade" id="replyModal-{{ post.id }}" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" action="{% url 'post_reply' post.id %}">
+                                        {% csrf_token %}
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="replyModalLabel">Reply to Post: {{ post.title }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <textarea name="reply_content" class="form-control" id="replyContent-{{ post.id }}" rows="4" placeholder="Write your reply here..."></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit Reply</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+
+                        {% endfor %}
+
+
+
+                        
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div class="col-xl-12">
+                    <div class="add_review_box">
+                        <h3 class="add_review_title">আপনার সমস্যা লিখুন!</h3>
+                        <form class="add_review_form" action="{% url 'add_forum_question' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-box">
+                                        <input type="text" name="title" placeholder="আপনার প্রশ্ন লিখুন" required class="form-control"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-box">                                      
+                                        <textarea name="forum_question" placeholder="সমস্যার বিবরণ দিন" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="review_submit_btn">
+                                        <button type="submit" class="thm-btn">Submit Question</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Reply Modal -->
+{% comment %} <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+      </div>
+    </div>
+  </div>
+ {% endcomment %}
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var revapi;
+
+    jQuery(document).ready(function() {
+        "use strict";
+        revapi = jQuery('.tp-banner').revolution({
+            delay: 15000,
+            startwidth: 1200,
+            startheight: 278,
+            hideThumbs: 10,
+            fullWidth: "on"
+        });
+
+    }); //ready
+</script>
+
+
+
+
+
+
+
+{% endblock %}

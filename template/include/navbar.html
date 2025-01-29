@@ -1,0 +1,289 @@
+{% load static %}
+
+<header class="main-header">
+    <div class="topbar">
+        <div class="container">
+            <div class="main-logo">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/logo-dark.png" width="105" alt="">
+                </a>
+                <div class="mobile-nav__buttons">
+                    <a href="#" class="search-toggler"><i class="organik-icon-magnifying-glass"></i></a>
+                    <a href="#" class="mini-cart__toggler"><i class="organik-icon-shopping-cart"></i></a>
+                </div>
+                <!-- /.mobile__buttons -->
+
+                <span class="fa fa-bars mobile-nav__toggler"></span>
+            </div>
+            <!-- /.main-logo -->
+
+            <div class="topbar__left">
+                <!-- <div class="topbar__social">
+                    <a href="#" class="fab fa-twitter"></a>
+                    <a href="#" class="fab fa-facebook-square"></a>
+                    <a href="#" class="fab fa-instagram"></a>
+                </div> -->
+                <!-- /.topbar__social -->
+                <div class="topbar__info">
+                    <i class="organik-icon-email"></i>
+                    <p>Email <a href="mailto:info@organik.com">info@organik.com</a></p>
+                </div>
+                <!-- /.topbar__info -->
+            </div>
+            <!-- /.topbar__left -->
+            <div class="topbar__right">
+                <div class="topbar__info">
+                    <i class="organik-icon-calling"></i>
+                    <p>Phone <a href="tel:+8801973794507">+8801973794507</a></p>
+                </div>
+                <!-- /.topbar__info -->
+                <!-- <div class="topbar__buttons">
+                    <a href="#" class="search-toggler"><i class="organik-icon-magnifying-glass"></i></a>
+                    <a href="#" class="mini-cart__toggler"><i class="organik-icon-shopping-cart"></i></a>
+                </div> -->
+                <!-- /.topbar__buttons -->
+            </div>
+            <!-- /.topbar__left -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.topbar -->
+    <nav class="main-menu">
+        <div class="container">
+            <div class="main-menu__login">
+                <a href="{% url 'login' %}"><i class="organik-icon-user"></i>লগইন / সাইন আপ</a>
+            </div>
+            <!-- /.main-menu__login -->
+            <ul class="main-menu__list">
+                <li class="dropdown">
+                    <a href="{% url 'home' %}">হোম</a>
+                </li>
+                <!-- <li class="dropdown"><a href="news.html">Who are we?</a>
+                    <ul>
+                        <li><a href="news.html">About Us</a></li>
+                        <li><a href="news-details.html">Our Farmers</a></li>
+                    </ul>
+                </li> -->
+                <li class="dropdown">
+                    <a href="{% url 'all_products' %}">বাজার</a>
+                </li>
+                <li class="dropdown"><a href="{% url 'forum' %}">খবরা খবর</a>
+                    <ul>
+                        <!-- <li><a href="news.html">Blog</a></li> -->
+                        <li><a href="{% url 'forum' %}">ফোরাম</a></li>
+                    </ul>
+                </li>
+                <!-- <li><a href="contact.html">যোগাযোগ করুন</a></li> -->
+            </ul>
+
+            {% if user.is_authenticated %}
+                <a href="#" class="btn btn-secondary mr-3" data-bs-toggle="modal" data-bs-target="#uploadProductModal">পণ্য সংযোজন</a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <a href="#" class="btn btn-secondary mr-3" data-bs-toggle="modal" data-bs-target="#productsModal">পণ্য সমুহ</a>
+            {% endif %}
+
+
+            <a class="btn btn-success" href={% url 'farmer_posts' %}>আপনার সহযোগিতা</a>
+            <!-- /.main-menu__language -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <!-- /.main-menu -->
+</header>
+<!-- /.main-header -->
+
+<div class="stricky-header stricked-menu main-menu">
+    <div class="sticky-header__content"></div>
+    <!-- /.sticky-header__content -->
+</div>
+<!-- /.stricky-header -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal to Show Uploaded Products -->
+<div class="modal fade" id="productsModal" tabindex="-1" aria-labelledby="productsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productsModalLabel">Your Uploaded Products</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Products Table -->
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products %}
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.description }}</td>
+                <td>
+                  <!-- Delete Form -->
+                  <form action="{% url 'delete_product' product.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">No products found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal for Product Upload -->
+<div class="modal fade" id="uploadProductModal" tabindex="-1" aria-labelledby="uploadProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadProductModalLabel">Upload Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'upload_product' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="name" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="category" class="form-label">Category</label>
+              <select class="form-control" id="category" name="category">
+                {% for category in categories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="tags" class="form-label">Tags</label>
+              <input type="text" class="form-control" id="tags" name="tags">
+            </div>
+            <div class="mb-3">
+              <label for="weight" class="form-label">Weight</label>
+              <input type="text" class="form-control" id="weight" name="weight">
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Product Image</label>
+              <input type="file" class="form-control" id="image" name="image" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Upload Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+<div class="mobile-nav__wrapper">
+    <div class="mobile-nav__overlay mobile-nav__toggler"></div>
+    <!-- /.mobile-nav__overlay -->
+    <div class="mobile-nav__content">
+        <span class="mobile-nav__close mobile-nav__toggler"><i class="organik-icon-close"></i></span>
+
+        <div class="logo-box">
+            <a href="index.html" aria-label="logo image"><img src="assets/images/logo-light.png" width="155" alt="" /></a>
+        </div>
+        <!-- /.logo-box -->
+        <div class="mobile-nav__container"></div>
+        <!-- /.mobile-nav__container -->
+
+        <ul class="mobile-nav__contact list-unstyled">
+            <li>
+                <i class="organik-icon-email"></i>
+                <a href="mailto:needhelp@organik.com">needhelp@organik.com</a>
+            </li>
+            <li>
+                <i class="organik-icon-calling"></i>
+                <a href="tel:666-888-0000">666 888 0000</a>
+            </li>
+        </ul>
+        <!-- /.mobile-nav__contact -->
+        <div class="mobile-nav__top">
+            <div class="mobile-nav__language">
+                <img src="assets/images/resources/flag-1-1.jpg" alt="">
+                <label class="sr-only" for="language-select">select language</label>
+                <!-- /#language-select.sr-only -->
+                <select class="selectpicker" id="language-select">
+                    <option value="english">English</option>
+                    <option value="arabic">Arabic</option>
+                </select>
+            </div>
+            <!-- /.mobile-nav__language -->
+            <div class="main-menu__login">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}"><i class="organik-icon-user"></i>Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}"><i class="organik-icon-user"></i>Login / Register</a>
+                {% endif %}
+            </div>
+            
+            <!-- /.main-menu__login -->
+        </div>
+        <!-- /.mobile-nav__top -->
+
+
+
+    </div>
+    <!-- /.mobile-nav__content -->
+</div>
+<!-- /.mobile-nav__wrapper -->

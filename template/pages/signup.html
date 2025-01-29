@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+                    {% load static %}
+                    
+                    
+                    
+    {% block title %}
+        Login
+    {% endblock title %}
+    
+    {% block content %}
+    
+    <style>
+    
+    
+        body{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://ifarmer.asia/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9JYTJWNVNTSWRhbkJ0YzJWSFpESnRaV3RSYVdFeGJXWlpXVmhyV1VOVEJqb0dSVlE2RUdScGMzQnZjMmwwYVc5dVNTSTdhVzVzYVc1bE95Qm1hV3hsYm1GdFpUMGlNekl6TUM1cWNHY2lPeUJtYVd4bGJtRnRaU285VlZSR0xUZ25Kek15TXpBdWFuQm5CanNHVkRvUlkyOXVkR1Z1ZEY5MGVYQmxTU0lQYVcxaFoyVXZhbkJsWndZN0JsUT0iLCJleHAiOiIyMDI0LTA5LTE2VDExOjE0OjE2LjU3MVoiLCJwdXIiOiJibG9iX2tleSJ9fQ==--ddfece3ffe4b3699d8eb2991c50292b859a2d29a/3230.jpg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%223230.jpg%22%3B+filename%2A%3DUTF-8%27%273230.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .form-2-wrapper {
+            background: #a1feaa;
+            padding: 50px;
+            border-radius: 8px;
+        }
+        input.form-control{
+            padding: 11px;
+            border: none;
+            border: 2px solid #405c7cb8;
+            border-radius: 30px;
+            background-color: transparent;
+            font-family: Arial, Helvetica, sans-serif;
+            
+            
+        }
+        input.form-control:focus{
+            box-shadow: none !important;
+            outline: 0px !important;
+            background-color: transparent;
+        }
+        button.login-btn{
+            background: #b400ff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 30px;
+        }
+        .register-test a{
+            color: #000;
+        }
+        .social-login button{
+            border-radius: 30px;
+        }
+    
+    
+    
+    </style>
+                    
+                    
+                    
+                    
+    <div class="container">
+        <div class="row">
+          <!-- Left Blank Side -->
+          <div class="col-lg-6"></div>
+      
+          <!-- Right Side Form -->
+          <div class="col-lg-6 d-flex align-items-center justify-content-center right-side mt-5">
+            <div class="form-2-wrapper">
+              <div class="logo text-center">
+                {% comment %} <h2>Logo</h2> {% endcomment %}
+              </div>
+              <h2 class="text-center mb-4">Create a new Account</h2>
+      
+              <!-- Signup Form -->
+              <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Display any error messages from Django -->
+                {% if messages %}
+                    <div class="alert alert-danger">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <!-- Name Input -->
+                <div class="mb-3 form-box">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" required>
+                </div>
+            
+                <!-- Phone Number Input -->
+                <div class="mb-3 form-box">
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter Your Phone Number" required>
+                </div>
+            
+                <!-- Email Input -->
+                <div class="mb-3 form-box">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" required>
+                </div>
+            
+                <!-- Password Input -->
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+                </div>
+            
+                <!-- Profile Picture Upload -->
+                <div class="mb-3">
+                    <label for="profile_picture" class="form-label">Enter your Profile Picture</label>
+                    <input class="form-control" type="file" id="profile_picture" name="profile_picture" required>
+                </div>
+            
+                <!-- Signup Button -->
+                <button type="submit" class="btn btn-outline-secondary login-btn w-100 mb-3">Signup</button>
+            </form>
+
+              <!-- Login Link -->
+              <p class="text-center register-test mt-3">Already Have an Account? <a href="{% url 'login' %}" class="text-decoration-none">Login</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    {% endblock content %}

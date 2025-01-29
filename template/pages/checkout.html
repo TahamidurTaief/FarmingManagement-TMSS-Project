@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Product Information on the Left Side -->
+        <div class="col-md-6">
+            <div class="card">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Price: &#2547; {{ product.price }}</p>
+                    <p class="card-text">{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Form on the Right Side -->
+        <div class="col-md-6">
+            <h3>Checkout</h3>
+            <form action="{% url 'checkout' product.id %}" method="POST">
+                {% csrf_token %}
+                
+
+                <!-- User Details -->
+                <div class="mb-3">
+                    <label for="full_name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" id="address" name="address" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <!-- Payment Options -->
+                <div class="mb-3">
+                    <label class="form-label">Select Payment Method</label>
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn" id="bkash-btn" onclick="showPayment('bkash')"
+                            style="background-color: #D8136B; color: white;">bKash</button>
+                        <button type="button" class="btn ml-2" id="nagad-btn" onclick="showPayment('nagad')"
+                            style="background-color: #E51F20; color: white;">Nagad</button>
+                        <button type="button" class="btn ml-2" id="rocket-btn" onclick="showPayment('rocket')"
+                            style="background-color: #88318B; color: white;">Rocket</button>
+                    </div>
+                </div>
+
+                <!-- Payment Descriptions -->
+                <div id="payment-description" class="mb-3 p-3 rounded text-white" style="display: none;">
+                    <p id="bkash-desc" style="display: none; background-color: #D8136B; padding: 10px;">
+                        <strong>Your amount is:</strong> <b>&#2547; {{ product.price }}</b><br>
+                        <strong>Make payment on:</strong> <b>01973794507</b><br>
+                        First, send the payment to this number. After that, please submit your transaction number and transaction ID in the form below to complete your order.<br>
+                        <em><strong>Thanks for staying with us!</strong></em>
+                    </p>
+                    <p id="nagad-desc" style="display: none; background-color: #E51F20; padding: 10px;">
+                        <strong>Your amount is:</strong> <b>&#2547; {{ product.price }}</b><br>
+                        <strong>Make payment on:</strong> <b>01973794507</b><br>
+                        First, send the payment to this number. After that, please submit your transaction number and transaction ID in the form below to complete your order.<br>
+                        <em><strong>Thanks for staying with us!</strong></em>
+                    </p>
+                    <p id="rocket-desc" style="display: none; background-color: #88318B; padding: 10px;">
+                        <strong>Your amount is:</strong> <b>&#2547; {{ product.price }}</b><br>
+                        <strong>Make payment on:</strong> <b>01973794507</b><br>
+                        First, send the payment to this number. After that, please submit your transaction number and transaction ID in the form below to complete your order.<br>
+                        <em><strong>Thanks for staying with us!</strong></em>
+                    </p>
+                </div>
+
+                <div class="mb-3">
+                    <label for="transaction_number" class="form-label">Transaction Number</label>
+                    <input type="text" class="form-control" id="transaction_number" name="transaction_number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="transaction_id" class="form-label">Transaction ID</label>
+                    <input type="text" class="form-control" id="transaction_id" name="transaction_id" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to toggle payment descriptions dynamically
+    function showPayment(method) {
+        // Hide all descriptions
+        document.getElementById('bkash-desc').style.display = 'none';
+        document.getElementById('nagad-desc').style.display = 'none';
+        document.getElementById('rocket-desc').style.display = 'none';
+
+        // Show the selected description
+        document.getElementById(method + '-desc').style.display = 'block';
+
+        // Change the payment description container background color
+        const descriptionContainer = document.getElementById('payment-description');
+        if (method === 'bkash') {
+            descriptionContainer.style.backgroundColor = '#D8136B';
+        } else if (method === 'nagad') {
+            descriptionContainer.style.backgroundColor = '#E51F20';
+        } else if (method === 'rocket') {
+            descriptionContainer.style.backgroundColor = '#88318B';
+        }
+        descriptionContainer.style.display = 'block';
+    }
+</script>
+{% endblock %}

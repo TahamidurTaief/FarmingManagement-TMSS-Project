@@ -1,0 +1,90 @@
+<!-- donation_page.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Donate to: <span style="color: red;">{{ post.title }}</span></h2>
+    <p><b>Payment Methods: bKash / Nagad / Rocket</b></p>
+
+    <!-- Payment Method Selection -->
+    <div class="form-group mt-4">
+        <label for="payment_method"><b>Select Payment Method</b></label>
+        <select id="payment_method" class="form-control" onchange="showPaymentDescription()">
+            <option value="">-- Select Payment Method --</option>
+            <option value="bkash">bKash</option>
+            <option value="nagad">Nagad</option>
+            <option value="rocket">Rocket</option>
+        </select>
+    </div>
+
+    <!-- Payment Instructions -->
+    <div id="payment-description" class="mt-3 p-3 rounded text-white" style="display: none;">
+        <p id="bkash-desc" style="display: none; background-color: #D8136B; padding: 10px;">
+            <strong>bKash Number:</strong> <b>{{ post.author.phone_number }}</b><br>
+            Please send your donation to this bKash number and provide the transaction ID in the form below.<br>
+            <em><strong>Thank you for your generous support!</strong></em>
+        </p>
+        <p id="nagad-desc" style="display: none; background-color: #E51F20; padding: 10px;">
+            <strong>Nagad Number:</strong> <b>{{ post.author.phone_number }}</b><br>
+            Please send your donation to this Nagad number and provide the transaction ID in the form below.<br>
+            <em><strong>Thank you for your generous support!</strong></em>
+        </p>
+        <p id="rocket-desc" style="display: none; background-color: #88318B; padding: 10px;">
+            <strong>Rocket Number:</strong> <b>{{ post.author.phone_number }}</b><br>
+            Please send your donation to this Rocket number and provide the transaction ID in the form below.<br>
+            <em><strong>Thank you for your generous support!</strong></em>
+        </p>
+    </div>
+
+    <!-- Donation Form -->
+    <form method="POST" action="" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="donor_name">Your Name</label>
+            <input type="text" name="donor_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="donor_phone">Your Phone Number</label>
+            <input type="text" name="donor_phone" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="donor_email">Your Email</label>
+            <input type="email" name="donor_email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="donation_amount">Your Donation Amount</label>
+            <input type="number" name="donation_amount" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="transaction_id">Your Transaction ID (bKash/Nagad/Rocket)</label>
+            <input type="text" name="transaction_id" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Submit Donation</button>
+    </form>
+</div>
+
+<script>
+    function showPaymentDescription() {
+        // Hide all descriptions
+        document.getElementById('bkash-desc').style.display = 'none';
+        document.getElementById('nagad-desc').style.display = 'none';
+        document.getElementById('rocket-desc').style.display = 'none';
+        document.getElementById('payment-description').style.display = 'none';
+
+        // Get selected payment method
+        const method = document.getElementById('payment_method').value;
+
+        // Show the corresponding description
+        if (method === 'bkash') {
+            document.getElementById('bkash-desc').style.display = 'block';
+            document.getElementById('payment-description').style.display = 'block';
+        } else if (method === 'nagad') {
+            document.getElementById('nagad-desc').style.display = 'block';
+            document.getElementById('payment-description').style.display = 'block';
+        } else if (method === 'rocket') {
+            document.getElementById('rocket-desc').style.display = 'block';
+            document.getElementById('payment-description').style.display = 'block';
+        }
+    }
+</script>
+{% endblock %}

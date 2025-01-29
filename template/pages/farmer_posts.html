@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Donation Posts
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+    <div class="tab active-tab" id="review">
+        <div class="reviews-box">
+            <div class="row">
+
+
+
+
+                <div class="col-xl-12 col-md-12">
+                    <div class="product_reviews_box">
+                        <h3 class="product_reviews_title">প্রত্যেকে মোরা পরের তরে!</h3>
+
+
+                        {% for post in posts %}
+                            <div class="col-md-12">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img src="{{post.author.profile_picture.url}}" alt="" style="width: 120px; height: 120px; border-radius: 50%;">
+                                            </div>
+                                            <div class="col-9">
+                                                <h3>{{ post.title }} </h3>
+                                        <p>{{ post.content }}</p>
+                                        <p><i>{{ post.created_at|timesince }} ago</i></p>
+                                        <a href="{% url 'donation_page' post.id %}" class="btn btn-success">Donate</a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+        
+        
+
+
+
+                        
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                {% if user.is_authenticated %}
+<div class="col-xl-12 mt-5 pt-5">
+    <div class="add_review_box">
+        <h3 class="add_review_title">সহযোগিতার জন্য আবেদন</h3>
+        <form class="add_review_form" action="{% url 'add_donation_post' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-box">
+                        <label for="title">আপনার সমস্যা</label>
+                        <input type="text" name="title" placeholder="আপনার সমস্যার কথা লিখুন" required class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="input-box">
+                        <label for="content">সমস্যা ও সহযোগিতার প্রাপ্তির বিবরণ</label>
+                        <textarea name="content" placeholder="কী ধরণের সমস্যা ও কী সহযোগিতা চান, তার বিস্তারিত লিখুন।" required class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-xl-12">
+                    <div class="review_submit_btn">
+                        <button type="submit" class="thm-btn">Submit Donation Post</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="col-xl-12 mt-5 pt-5">
+    <div class="add_review_box">
+        <h3 class="add_review_title">Please Log In to Post a Donation Request</h3>
+        <a href="{% url 'login' %}" class="thm-btn">Login</a>
+    </div>
+</div>
+{% endif %}
+
+                
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- Reply Modal -->
+{% comment %} <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+      </div>
+    </div>
+  </div>
+ {% endcomment %}
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var revapi;
+
+    jQuery(document).ready(function() {
+        "use strict";
+        revapi = jQuery('.tp-banner').revolution({
+            delay: 15000,
+            startwidth: 1200,
+            startheight: 278,
+            hideThumbs: 10,
+            fullWidth: "on"
+        });
+
+    }); //ready
+</script>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% comment %} <!-- farmer_posts.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Farmer Posts</h2>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3>{{ post.title }} <span>{{ post.created_at|timesince }} ago</span></h3>
+                    <p>{{ post.content }}</p>
+                    <a href="{% url 'donation_page' post.id %}" class="btn btn-primary">Donate</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} {% endcomment %}

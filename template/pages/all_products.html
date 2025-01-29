@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<section class="products-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-3">
+                <div class="product-sidebar">
+                    <div class="product-sidebar__single product-sidebar__search-widget">
+                        <form action="{% url 'all_products' %}" method="get">
+                            <input type="text" name="search" placeholder="Search">
+                            <button class="organik-icon-magnifying-glass" type="submit"></button>
+                        </form>
+                    </div>
+                    <!-- /.product-sidebar__single -->
+                    <div class="product-sidebar__single">
+                        <h3>মূল্যের মাধ্যমে</h3>
+                        <div class="product-sidebar__price-range">
+                            <form action="{% url 'all_products' %}" method="get">
+                                <div class="range-slider-price" id="range-slider-price"></div>
+                                <div class="form-group">
+                                    <div class="left">
+                                        <p>&#2547; <span id="min-value-rangeslider">{{ min_price }}</span></p>
+                                        <span>-</span>
+                                        <p>&#2547; <span id="max-value-rangeslider">{{ max_price }}</span></p>
+                                    </div>
+                                    <!-- /.left -->
+                                    <div class="right">
+                                        <input type="hidden" name="min_price" id="hidden-min-price" value="{{ min_price }}">
+                                        <input type="hidden" name="max_price" id="hidden-max-price" value="{{ max_price }}">
+                                        <input type="submit" class="thm-btn" value="Filter">
+                                    </div>
+                                    <!-- /.right -->
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.product-sidebar__price-range -->
+                    </div>
+                    <!-- /.product-sidebar__single -->
+                    <div class="product-sidebar__single">
+                        <h3>ক্যাটাগরি সমূহ</h3>
+                        <ul class="list-unstyled product-sidebar__links">
+                            {% for category in categories %}
+                            <li>
+                                <a href="{% url 'all_products' %}?category={{ category.id }}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}">
+                                    {{ category.name }} 
+                                    {% if selected_category == category.id|stringformat:"s" %}
+                                        <i class="fa fa-angle-right"></i>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <!-- /.list-unstyled product-sidebar__links -->
+                    </div>
+                    <!-- /.product-sidebar__single -->
+                </div>
+                <!-- /.product-sidebar -->
+            </div>
+            <!-- /.col-sm-12 col-md-12 col-lg-3 -->
+            <div class="col-sm-12 col-md-12 col-lg-9">
+                <div class="product-sorter mt-3" >
+                    <p>Showing {{ products|length }} results</p>
+                    {% comment %} <div class="product-sorter__select">
+                        <select class="selectpicker">
+                            <option value="#">Sort by popular</option>
+                            <option value="#">Sort by price</option>
+                            <option value="#">Sort by name</option>
+                        </select>
+                    </div> {% endcomment %}
+                    <!-- /.product-sorter__select -->
+                </div>
+                <!-- /.product-sorter -->
+                <div class="row pt-5" >
+                    {% for product in products %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="product-card">
+                            <div class="product-card__image">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <div class="product-card__image-content">
+                                    <a href="{% url 'product_details' product.id %}"><i class="organik-icon-visibility"></i></a>
+                                    <a href="{% url 'checkout' product.id %}"><i class="organik-icon-shopping-cart"></i></a>
+                                </div>
+                                <!-- /.product-card__image-content -->
+                            </div>
+                            <!-- /.product-card__image -->
+                            <div class="product-card__content">
+                                <div class="product-card__left">
+                                    <h3><a href="{% url 'product_details' product.id %}">{{ product.name }}</a></h3>
+                                    <p>&#2547; {{ product.price }}</p>
+                                </div>
+                                <!-- /.product-card__left -->
+                                <div class="product-card__right">
+                                    <!-- Add stars dynamically if you have a rating field -->
+                                    {% for star in "★★★★★" %}
+                                        <i class="fa fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                <!-- /.product-card__right -->
+                            </div>
+                            <!-- /.product-card__content -->
+                        </div>
+                        <!-- /.product-card -->
+                    </div>
+                    <!-- /.col-md-6 col-lg-4 -->
+                    {% endfor %}
+                </div>
+                
+                <!-- /.row -->
+                <div class="text-center">
+                    <a href="#" class="thm-btn products__load-more">Load More</a>
+                    <!-- /.thm-btn -->
+                </div>
+                <!-- /.text-center -->
+            </div>
+            <!-- /.col-sm-12 col-md-12 col-lg-9 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.products-page -->
+{% endblock %}

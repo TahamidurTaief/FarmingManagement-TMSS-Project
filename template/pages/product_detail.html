@@ -1,0 +1,163 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load custom_filters %}
+
+
+{% block title %}{{ product.name }}{% endblock %}
+
+
+
+{% block content %}
+<section class="product_detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6">
+                <div class="product_detail_image">
+                    <img src="{{product.image.url}}" alt="">
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="product_detail_content">
+                    <h2>{{ product.name }}</h2>
+                    <div class="product_detail_review_box">
+                        <div class="product_detail_price_box">
+                            <p>&#2547;   {{ product.price }}</p>
+                        </div>
+                        <div class="product_detail_review">
+                            {% for i in rating_range %}
+                                <a href="#"><i class="fa fa-star{% if i > product.rating %} deactive{% endif %}"></i></a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="product_detail_text">
+                        <p>{{ product.description }}</p>
+                    </div>
+                    <ul class="list-unstyled product_detail_address">
+                        <li>REF. {{ product.reference }}</li>
+                        <li>Available in store</li>
+                    </ul>
+                    <a href="{% url 'checkout' product.id %}">
+                        <div class="addto-cart-box">
+                            <button class="thm-btn" type="submit">Checkout</button>
+                        </div>
+                    </a>
+                    <ul class="list-unstyled category_tag_list">
+                        <li><span>Category:</span> {{ product.category }}</li>
+                        <li><span>Tags:</span> {{ product.tags }}</li>
+                        <li><span>Weight:</span> {{ product.weight }}</li>
+                    </ul>
+                    <div class="product_detail_share_box">
+                        <div class="share_box_title">
+                            <h2>Share with friends</h2>
+                        </div>
+                        <div class="share_box_social">
+                            <a href="#"><i class="fab fa-facebook-square"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="tab active-tab" id="review">
+    <div class="reviews-box">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="product_reviews_box">
+                    <h3 class="product_reviews_title">Seller</h3>
+                    <div class="product_reviews_single">
+                        <div class="product_reviews_image">
+                            <img src="{{product.author.profile_picture.url}}" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+                        </div>
+                        <div class="product_reviews_content">
+                            <h3>{{ product.author.first_name }}<span></span></h3>
+                            <p>Uploaded Product: {{product.name}}</p>
+                            <!-- <div class="product_reviews_rating product_detail_review"> -->
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#" class="deactive"><i class="fa fa-star"></i></a>
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<section class="product-two">
+    <div class="container">
+        <div class="block-title text-center">
+            <div class="block-title__decor"></div>
+            <p>Recently Added</p>
+            <h3>Similar Products</h3>
+        </div>
+        <div class="thm-tiny__slider" id="product-two__carousel" data-tiny-options='{
+            "container": "#product-two__carousel",
+            "items": 1,
+            "slideBy": "page",
+            "gutter": 0,
+            "mouseDrag": true,
+            "autoplay": true,
+            "nav": false,
+            "controlsPosition": "bottom",
+            "controlsText": ["<i class=\"fa fa-angle-left\"></i>", "<i class=\"fa fa-angle-right\"></i>"],
+            "autoplayButtonOutput": false,
+            "responsive": {
+                "640": {
+                  "items": 2,
+                  "gutter": 30
+                },
+                "992": {
+                  "gutter": 30,
+                  "items": 3
+                },
+                "1200": {
+                  "disable": true
+                }
+              }
+        }'>
+            {% for similar_product in similar_products %}
+                <div>
+                    <div class="product-card__two">
+                        <div class="product-card__two-image">
+                            {% if similar_product.is_on_sale %}
+                                <span class="product-card__two-sale">sale</span>
+                            {% endif %}
+                            <img src="{{similar_product.image.url}}" alt="">
+                            <div class="product-card__two-image-content">
+                                <a href="#"><i class="organik-icon-visibility"></i></a>
+                                <a href="#"><i class="organik-icon-heart"></i></a>
+                                <a href="{% url 'checkout' product.id %}"><i class="organik-icon-shopping-cart"></i></a> <!-- Link to checkout -->
+                            </div>
+                        </div>
+                        <div class="product-card__two-content">
+                            <h3><a href="{% url 'product_details' similar_product.id %}">{{ similar_product.name }}</a></h3>
+                            <div class="product-card__two-price">
+                                <p>&#2547;   {{ similar_product.price }}</p>
+                                {% if similar_product.old_price %}
+                                    <span>&#2547;   {{ similar_product.old_price }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

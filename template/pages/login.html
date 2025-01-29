@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+
+<style>
+
+
+    body{
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        /* height: 100vh; */
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .page-wrapper{
+      background: url('https://img.freepik.com/free-photo/countryside-woman-out-field_23-2148761762.jpg?t=st=1731942682~exp=1731946282~hmac=b7537ba6f9b49aa10c1a4b8959fd48f5612999d92d6b675d099e7e14564a5d65&w=1480');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* margin-top: 100px; */
+    }
+    
+    .form-2-wrapper {
+        background: #ffffff79;
+        padding: 50px;
+        border-radius: 8px;
+        margin-top: 90px;
+    }
+    input.form-control{
+        padding: 11px;
+        border: none;
+        border: 2px solid #ffffffb8;
+        border-radius: 30px;
+        background-color: transparent;
+        font-family: Arial, Helvetica, sans-serif;
+       
+       
+    }
+    input.form-control:focus{
+        box-shadow: none !important;
+        outline: 0px !important;
+        background-color: transparent;
+    }
+    button.login-btn{
+        background: #b400ff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 30px;
+    }
+    .register-test a{
+        color: #000;
+    }
+    .social-login button{
+        border-radius: 30px;
+    }
+
+
+
+</style>
+
+
+
+
+<div class="container">
+    <div class="row">
+      <!-- Left Blank Side -->
+      <div class="col-lg-6"></div>
+  
+      <!-- Right Side Form -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center right-side">
+        <div class="form-2-wrapper">
+          <div class="logo text-center">
+            <h2>Logo</h2>
+          </div>
+          <h2 class="text-center mb-4">Sign Into Your Account</h2>
+          <!-- The form should use POST method to submit to Django's login view -->
+          <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <!-- Display any error messages from Django -->
+            {% if messages %}
+              <div class="alert alert-danger">
+                {% for message in messages %}
+                  {{ message }}
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="mb-3 form-box">
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" required>
+            </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+            </div>
+            <div class="mb-3">
+            </div>
+            <button type="submit" class="btn btn-outline-secondary login-btn w-100 mb-3">Login</button>
+          </form>
+  
+          <!-- Register Link -->
+          <p class="text-center register-test mt-3">Don't have an account? <a href="{% url 'signup' %}" class="text-decoration-none">Register here</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock content %}
